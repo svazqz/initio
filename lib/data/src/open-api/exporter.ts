@@ -26,7 +26,7 @@ try {
   });
 
   fs.writeFileSync(
-    `${__dirname}/openapi-docs.json`,
+    `${__dirname}/../../out/openapi-docs.json`,
     JSON.stringify(result, null, 2),
     {
       encoding: 'utf-8',

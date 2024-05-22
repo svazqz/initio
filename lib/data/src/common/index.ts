@@ -6,57 +6,12 @@ import {
   useQuery,
 } from '@tanstack/react-query';
 import { ZodType } from 'zod';
-import { DTO } from '../utils';
+import { DTO } from './utils';
 
-export const apiMutator = <T>(
-  endpoint: string,
-): (() => UseMutationResult<unknown, Error, T>) => {
-  return () => {
-    const mutation = useMutation({
-      mutationFn: async (data: T) => {
-        return fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}${endpoint}`, {
-          method: 'POST',
-          body: JSON.stringify(data),
-        });
-      },
-    });
-    return mutation;
-  };
-};
-
-export const apiGetMutator = <T>(
-  endpoint: string,
-): (() => UseMutationResult<unknown, Error, T>) => {
-  return () => {
-    const mutation = useMutation({
-      mutationFn: async (data: T) => {
-        const queryString = new URLSearchParams(
-          data as Record<string, string>,
-        ).toString();
-
-        return fetch(
-          `${process.env.NEXT_PUBLIC_BASE_API_URL}${endpoint}?${queryString}`,
-          {
-            method: 'GET',
-          },
-        );
-      },
-    });
-    return mutation;
-  };
-};
-
-export type APIConsumerPayload<T, Q> = {
+type APIConsumerPayload<T, Q> = {
   args?: T;
   query?: Q;
 };
-
-const getEndpointWithQuery = (endpoint: string, consumerPayload: any) =>
-  `${endpoint}${
-    consumerPayload.query
-      ? `?${new URLSearchParams(consumerPayload.query || {})}`
-      : ''
-  }`;
 
 type ConsumerFn<
   URLParams extends ZodType,
@@ -76,6 +31,13 @@ type ConsumerFn<
     response?: Response;
   };
 };
+
+const getEndpointWithQuery = (endpoint: string, consumerPayload: any) =>
+  `${endpoint}${
+    consumerPayload.query
+      ? `?${new URLSearchParams(consumerPayload.query || {})}`
+      : ''
+  }`;
 
 export const _useApiConsumer =
   <
@@ -154,4 +116,20 @@ export const useApiConsumer = <
   }
 
   return r;
+};
+
+export const apiMutator = <T>(
+  endpoint: string,
+): (() => UseMutationResult<unknown, Error, T>) => {
+  return () => {
+    const mutation = useMutation({
+      mutationFn: async (data: T) => {
+        return fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}${endpoint}`, {
+          method: 'POST',
+          body: JSON.stringify(data),
+        });
+      },
+    });
+    return mutation;
+  };
 };

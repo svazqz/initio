@@ -1,14 +1,12 @@
 /* eslint-disable @typescript-eslint/no-namespace */ import {
-  integer,
   pgTable,
   varchar,
 } from 'drizzle-orm/pg-core';
 
-export namespace Artist {
-  export const Entity = pgTable('artists', {
+export namespace Geo {
+  export const Entity = pgTable('geo', {
     userId: varchar('userId').primaryKey(),
-    name: varchar('name').notNull().unique(),
-    categoryId: integer('categoryId'),
+    name: varchar('data').notNull(),
   });
 
   export type SelectDTO = typeof Entity.$inferSelect;

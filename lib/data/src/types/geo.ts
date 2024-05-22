@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-namespace */
 import { Geo as GeoSchemas } from '../schemas';
-import { DTO } from '../utils';
+import { DTO } from '../common/utils';
 
 export namespace Geo {
   export type CoordinatesDTO = DTO<typeof GeoSchemas.Schemas.Coordinates>;

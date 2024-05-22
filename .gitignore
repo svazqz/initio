@@ -45,3 +45,6 @@ Thumbs.db
 
 .env
 .env.*
+
+
+lib/data/out/*.json
