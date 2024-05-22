@@ -1,0 +1,30 @@
+{
+  "name": "lib-data",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "lib/data/src",
+  "projectType": "library",
+  "targets": {
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["lib/data/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "lib/data/jest.config.ts"
+      }
+    },
+    "exporter": {
+      "executor": "nx:run-commands",
+      "outputs": [],
+      "options": {
+        "command": "API_EXPORTER=true ts-node lib/data/src/open-api/exporter.ts"
+      }
+    }
+  },
+  "tags": []
+}

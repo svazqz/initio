@@ -1,0 +1,15 @@
+{
+  "tailwindCSS.classAttributes": ["class", "className", "ngClass", ".*Styles"],
+  "tailwindCSS.experimental.classRegex": [
+    "className: `([^`]*)",
+  ],
+  "editor.formatOnSave": true,
+  "deno.enablePaths": [
+    "supabase/functions"
+  ],
+  "deno.lint": true,
+  "deno.unstable": true,
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  }
+}

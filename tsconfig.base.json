@@ -1,0 +1,28 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "rootDir": ".",
+    "sourceMap": true,
+    "declaration": false,
+    "moduleResolution": "node",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "importHelpers": true,
+    "target": "es2015",
+    "module": "esnext",
+    "lib": ["es2020", "dom"],
+    "skipLibCheck": true,
+    "skipDefaultLibCheck": true,
+    "strictNullChecks": true,
+    "baseUrl": ".",
+    "paths": {
+      "@next-base/lib-data/consumers": ["lib/data/src/consumers/index.ts"],
+      "@next-base/lib-data/models": ["lib/data/src/models/index.ts"],
+      "@next-base/lib-data/validation-schemas": [
+        "lib/data/src/validation-schemas/index.ts"
+      ]
+    },
+    "types": ["react/next"]
+  },
+  "exclude": ["node_modules", "tmp"]
+}

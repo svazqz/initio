@@ -1,0 +1,29 @@
+{
+  "name": "next-base-e2e",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/next-base-e2e/src",
+  "targets": {
+    "e2e": {
+      "executor": "@nx/cypress:cypress",
+      "options": {
+        "cypressConfig": "apps/next-base-e2e/cypress.config.ts",
+        "testingType": "e2e",
+        "devServerTarget": "next-base:serve"
+      },
+      "configurations": {
+        "production": {
+          "devServerTarget": "next-base:serve:production"
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["apps/next-base-e2e/**/*.{js,ts}"]
+      }
+    }
+  },
+  "tags": [],
+  "implicitDependencies": ["next-base"]
+}
