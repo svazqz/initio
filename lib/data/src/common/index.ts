@@ -8,9 +8,11 @@ import {
 import { ZodType } from 'zod';
 import { DTO } from './utils';
 
-type APIConsumerPayload<T, Q> = {
-  args?: T;
-  query?: Q;
+type APIConsumerPayload<URLParams, QueryParams, Body> = {
+  urlParams?: URLParams;
+  query?: QueryParams;
+  body?: Body;
+  headers?: Record<string, string>;
 };
 
 type ConsumerFn<
@@ -19,13 +21,17 @@ type ConsumerFn<
   Body extends ZodType,
   Response extends ZodType,
 > = ((
-  consumerPayload: APIConsumerPayload<DTO<URLParams>, DTO<QueryParams>>,
+  consumerPayload: APIConsumerPayload<
+    DTO<URLParams>,
+    DTO<QueryParams>,
+    DTO<Body>
+  >,
 ) => {
   queryKey: string[];
   query: UseQueryResult<DTO<Response>>;
 }) & {
   types?: {
-    urlArgs?: URLParams;
+    urlParams?: URLParams;
     queryParams?: QueryParams;
     payload?: Body;
     response?: Response;
@@ -39,7 +45,7 @@ const getEndpointWithQuery = (endpoint: string, consumerPayload: any) =>
       : ''
   }`;
 
-export const _useApiConsumer =
+export const _apiConsumer =
   <
     URLParams extends ZodType,
     QueryParams extends ZodType,
@@ -49,12 +55,18 @@ export const _useApiConsumer =
     endpoint: string,
     method: string,
   ): ConsumerFn<URLParams, QueryParams, Body, Response> =>
-  (consumerPayload: APIConsumerPayload<DTO<URLParams>, DTO<QueryParams>>) => {
+  (
+    consumerPayload: APIConsumerPayload<
+      DTO<URLParams>,
+      DTO<QueryParams>,
+      DTO<Body>
+    >,
+  ) => {
     // validate input data with provided schemas
     const endpointKey = getEndpointWithQuery(endpoint, consumerPayload);
     const queryKey = [
       endpointKey,
-      ...Object.values(consumerPayload.args || {}),
+      ...Object.values(consumerPayload.urlParams || {}),
     ] as string[];
 
     const query = useQuery({
@@ -62,6 +74,11 @@ export const _useApiConsumer =
       queryFn: async () => {
         const response = await fetch(
           `${process.env.NEXT_PUBLIC_BASE_API_URL}${endpointKey}`,
+          {
+            method,
+            body: consumerPayload.body,
+            headers: consumerPayload.headers,
+          },
         );
         return response.json() as unknown as Response;
       },
@@ -70,7 +87,7 @@ export const _useApiConsumer =
     return { queryKey, query };
   };
 
-export const useApiConsumer = <
+export const apiConsumer = <
   URLParams extends ZodType,
   QueryParams extends ZodType,
   Body extends ZodType,
@@ -79,14 +96,14 @@ export const useApiConsumer = <
   endpoint: string,
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   s: {
-    urlArgs?: URLParams;
+    urlParams?: URLParams;
     queryParams?: QueryParams;
     payload?: Body;
     response?: Response;
-  },
+  } = {},
   method = 'get',
 ) => {
-  const r = _useApiConsumer<URLParams, QueryParams, Body, Response>(
+  const r = _apiConsumer<URLParams, QueryParams, Body, Response>(
     endpoint,
     method,
   );

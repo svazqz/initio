@@ -1,4 +1,4 @@
-import { useGetGeoByLatLongGet } from '@next-base/lib-data/consumers';
+import { getGeoByLatLong } from '@next-base/lib-data/consumers';
 import { createRequestHandler } from '../_common/request';
 
 export const GET = createRequestHandler(async (request) => {
@@ -10,4 +10,4 @@ export const GET = createRequestHandler(async (request) => {
   );
   const locationData = await locationResponse.json();
   return locationData.standard || locationData;
-}, useGetGeoByLatLongGet.types);
+}, getGeoByLatLong.types);

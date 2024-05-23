@@ -1,7 +1,7 @@
 import { Geo } from '../schemas';
-import { useApiConsumer } from '../common';
+import { apiConsumer } from '../common';
 
-export const useGetGeoByLatLongGet = useApiConsumer('/geo', {
+export const getGeoByLatLong = apiConsumer('/geo', {
   queryParams: Geo.Schemas.Coordinates,
   response: Geo.Schemas.LocationData,
 });
