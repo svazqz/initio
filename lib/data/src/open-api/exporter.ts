@@ -11,10 +11,10 @@ const registry = new OpenAPIRegistry();
 extendZodWithOpenApi(z);
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-const { useGetGeoByLatLongGet } = require('../consumers');
+const { getGeoByLatLong } = require('../consumers');
 
 try {
-  registry.registerPath((useGetGeoByLatLongGet as any).apiConfig);
+  registry.registerPath((getGeoByLatLong as any).apiConfig);
   const generator = new OpenApiGeneratorV3(registry.definitions);
 
   const result = generator.generateDocument({
