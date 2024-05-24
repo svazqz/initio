@@ -14,7 +14,7 @@ export const createRequestHandler =
   >(
     handler: (
       request: NextBaseRequest<z.infer<URLParams>, z.infer<QueryParams>>,
-    ) => Promise<Response>,
+    ) => Promise<z.infer<Response>>,
     s?: {
       urlArgs?: URLParams;
       queryParams?: QueryParams;
@@ -26,7 +26,6 @@ export const createRequestHandler =
     request: NextBaseRequest<z.infer<URLParams>, z.infer<QueryParams>>,
   ): Promise<NextResponse<z.infer<Response>>> => {
     const handlerReturn = await handler(request);
-
     return new NextResponse(
       JSON.stringify(
         typeof handlerReturn === 'object'
