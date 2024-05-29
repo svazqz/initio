@@ -1,7 +1,4 @@
-import { Geo } from '../schemas';
-import { apiConsumer } from '../common';
+import { apiConsumer } from '../common/client';
+import { getGeoList } from '../api';
 
-export const getGeoByLatLong = apiConsumer('/geo', {
-  queryParams: Geo.Schemas.Coordinates,
-  response: Geo.Schemas.LocationData,
-});
+export const getGeoListConsumer = apiConsumer(getGeoList.definition);
