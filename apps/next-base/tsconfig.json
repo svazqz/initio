@@ -22,12 +22,9 @@
       "@next-base/api/consumers": ["lib/ui/src/consumers/index.ts"],
       "@next-base/lib/data": ["lib/data/src/index.ts"],
       "@services": ["apps/next-base/services/index.ts"],
-      "@next-base/lib-data/models": ["lib/data/src/models/index.ts"],
-      "@next-base/lib-data/entities": ["lib/data/src/entities/index.ts"],
       "@next-base/lib-data/consumers": ["lib/data/src/consumers/index.ts"],
-      "@next-base/services/kyc": ["services/kyc/src/index.ts"],
-      "@next-base/services/payments": ["services/payments/src/index.ts"],
-      "@next-base/lib/providers": ["lib/providers/src/index.ts"]
+      "@next-base/lib-data/models": ["lib/data/src/models/index.ts"],
+      "@next-base/lib-data/schemas": ["lib/data/src/schemas/index.ts"],
     }
   },
   "include": [

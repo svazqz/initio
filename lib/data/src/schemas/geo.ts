@@ -6,6 +6,10 @@ const Coordinates = z.object({
   longitude: z.number(),
 });
 
+const CoordinatesList = z.object({
+  values: z.array(Coordinates),
+});
+
 const LocationData = z.object({
   city: z.string(),
   state: z.string(),
@@ -15,6 +19,7 @@ const LocationData = z.object({
 export namespace Geo {
   export const Schemas = {
     Coordinates,
+    CoordinatesList,
     LocationData,
   };
 }

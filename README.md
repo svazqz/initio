@@ -35,13 +35,10 @@ export namespace Geo {
 In NextBase, consumers are the definitive source of truth, delineating the Zod schemas involved in every API call. This consumer-centric approach enhances clarity and maintainability, ensuring that API interactions are consistently validated and documented.
 
 ```typescript
-import { Geo } from '../schemas';
-import { apiConsumer } from '../common';
+import { apiConsumer } from '../common/client';
+import { getGeoList } from '../api';
 
-export const getGeoByLatLong = apiConsumer('/geo', {
-  queryParams: Geo.Schemas.Coordinates,
-  response: Geo.Schemas.LocationData,
-});
+export const getGeoListConsumer = apiConsumer(getGeoList.definition);
 ```
 
 ### Request Handler
@@ -49,19 +46,19 @@ export const getGeoByLatLong = apiConsumer('/geo', {
 NextBase revolutionizes request handling by tying it directly to the consumer definitions. This alignment minimizes discrepancies between schema definitions and promotes seamless adaptability. Whether integrating a new serverless function or evolving existing backend services, the request handler ensures that API definitions remain stable and consistent.
 
 ```typescript
-import { getGeoByLatLong } from '@next-base/lib-data/consumers';
-import { createRequestHandler } from '../_common/request';
+import { createRequestHandler } from '../common/server';
+import { Geo as GeoSchemas } from '../schemas';
+import { Geo as GeoModels } from '../models';
 
-export const GET = createRequestHandler(async (request) => {
-  const searchParams = request.nextUrl.searchParams;
-  const lat = searchParams.get('latitude');
-  const long = searchParams.get('longitude');
-  const locationResponse = await fetch(
-    `https://geocode.xyz/${lat},${long}?json=1`,
-  );
-  const locationData = await locationResponse.json();
-  return locationData.standard || locationData;
-}, getGeoByLatLong.types);
+export const getGeoList = createRequestHandler({
+  handler: async (request) => {
+    const allLocations = await GeoModels.Model.getAllLatLong();
+    return allLocations;
+  },
+  schemas: {
+    response: GeoSchemas.Schemas.CoordinatesList,
+  },
+});
 ```
 
 The previous concepts allow also to get the following open API definition out of the box by runing the nx command `nx run lib-data:exporter` (WIP to improve the way consumers are loaded in the exporter):

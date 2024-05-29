@@ -18,6 +18,7 @@
     "paths": {
       "@next-base/lib-data/consumers": ["lib/data/src/consumers/index.ts"],
       "@next-base/lib-data/models": ["lib/data/src/models/index.ts"],
+      "@next-base/lib-data/schemas": ["lib/data/src/schemas/index.ts"],
       "@next-base/lib-data/validation-schemas": [
         "lib/data/src/validation-schemas/index.ts"
       ]

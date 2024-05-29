@@ -92,45 +92,21 @@ export const apiConsumer = <
   QueryParams extends ZodType,
   Body extends ZodType,
   Response extends ZodType,
->(
-  endpoint: string,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  s: {
-    urlParams?: URLParams;
+>(apiDefinition: {
+  handler: any;
+  schemas?: {
+    urlArgs?: URLParams;
     queryParams?: QueryParams;
     payload?: Body;
     response?: Response;
-  } = {},
-  method = 'get',
-) => {
+  };
+  endpoint?: string;
+  method?: string;
+}) => {
   const r = _apiConsumer<URLParams, QueryParams, Body, Response>(
-    endpoint,
-    method,
+    apiDefinition?.endpoint || '/',
+    apiDefinition.method || 'get',
   );
-
-  r.types = s;
-
-  if (process.env.API_EXPORTER) {
-    const apiConfig = {
-      method: method,
-      path: endpoint,
-      summary: '',
-      request: {
-        query: (s.queryParams as any)?.openapi('Query Params'),
-      },
-      responses: {
-        200: {
-          description: '',
-          content: {
-            'application/json': {
-              schema: (s.response as any)?.openapi('Response'),
-            },
-          },
-        },
-      },
-    } as RouteConfig;
-    (r as any).apiConfig = apiConfig;
-  }
 
   return r;
 };

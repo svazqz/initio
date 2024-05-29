@@ -1,12 +1,12 @@
 /* eslint-disable @typescript-eslint/no-namespace */ import {
   pgTable,
-  varchar,
+  doublePrecision,
 } from 'drizzle-orm/pg-core';
 
 export namespace Geo {
   export const Entity = pgTable('geo', {
-    userId: varchar('userId').primaryKey(),
-    name: varchar('data').notNull(),
+    latitude: doublePrecision('latitude').notNull(),
+    longitude: doublePrecision('longitude').notNull(),
   });
 
   export type SelectDTO = typeof Entity.$inferSelect;
