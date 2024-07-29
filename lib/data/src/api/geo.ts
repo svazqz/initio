@@ -1,10 +1,10 @@
 import { createRequestHandler } from '../common/server';
 import { Geo as GeoSchemas } from '../schemas';
-import { Geo as GeoModels } from '../models';
+import { Geo as GeoModel } from '../models';
 
 export const getGeoList = createRequestHandler({
   handler: async (request) => {
-    const allLocations = await GeoModels.Model.getAllLatLong();
+    const allLocations = await GeoModel.getAllLatLong();
     return allLocations;
   },
   schemas: {

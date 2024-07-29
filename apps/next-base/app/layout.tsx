@@ -1,4 +1,4 @@
-import './global.css';
+import '@next-base/lib-ui/style.css';
 
 export default function RootLayout({
   children,

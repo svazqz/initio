@@ -1,11 +1,11 @@
-# auth
+# lib-auth
 
 This library was generated with [Nx](https://nx.dev).
 
 ## Building
 
-Run `nx build auth` to build the library.
+Run `nx build lib-auth` to build the library.
 
 ## Running unit tests
 
-Run `nx test auth` to execute the unit tests via [Jest](https://jestjs.io).
+Run `nx test lib-auth` to execute the unit tests via [Jest](https://jestjs.io).
