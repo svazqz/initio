@@ -28,6 +28,7 @@
       "@next-base/lib-ui/style.css": ["./dist/lib/ui/style.css"],
       "@next-base/lib-ui": ["./dist/lib/ui"],
       "@next-base/lib-ui/components": ["lib/ui/src/components"],
+      "@next-base/lib-ui/components/*": ["lib/ui/src/components/*"],
       "@next-base/lib-ui/utils": ["lib/ui/src/utils.ts"],
       "@services": ["apps/next-base/services/index.ts"]
     },
