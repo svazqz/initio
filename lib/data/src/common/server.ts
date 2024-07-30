@@ -1,6 +1,6 @@
 import { RouteConfig } from '@asteasolutions/zod-to-openapi';
 import { NextRequest, NextResponse } from 'next/server';
-import { ZodBoolean, ZodNumber, ZodType, z } from 'zod';
+import { ZodBoolean, ZodNumber, ZodObject, ZodType, z } from 'zod';
 
 type NextBaseRequest<P, Q> = NextRequest & {
   nextUrl: { searchParams: { get: (key: keyof Q) => any } };
@@ -38,12 +38,15 @@ export const createRequestHandler = <
         const queryParams = {};
         const params = request.nextUrl.searchParams.keys();
         for (const param of params) {
-          if (_def.schemas?.queryParams.shape[param] instanceof ZodNumber) {
+          if (
+            (_def.schemas?.queryParams as any).shape[param] instanceof ZodNumber
+          ) {
             queryParams[param] = Number(
               request.nextUrl.searchParams.get(param),
             );
           } else if (
-            _def.schemas?.queryParams.shape[param] instanceof ZodBoolean
+            (_def.schemas?.queryParams as any).shape[param] instanceof
+            ZodBoolean
           ) {
             queryParams[param] = Boolean(
               request.nextUrl.searchParams.get(param),
