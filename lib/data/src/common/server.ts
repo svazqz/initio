@@ -3,6 +3,12 @@ import { RouteConfig } from '@asteasolutions/zod-to-openapi';
 import { NextRequest, NextResponse } from 'next/server';
 import { ZodBoolean, ZodNumber, ZodObject, ZodType, z } from 'zod';
 import { DTO } from './utils';
+import path from 'path';
+
+const protoDirectoryPath = path.join(
+  __dirname,
+  '../../../../../../../lib/data/src/proto/',
+);
 
 type NextBaseRequest<P, Q> = NextRequest & {
   nextUrl: { searchParams: { get: (key: keyof Q) => any } };
@@ -106,10 +112,9 @@ export const createRequestHandler = <
       request.headers.get('proto-in') == 'true' &&
       def.protoIn
     ) {
-      console.log(request.headers.get('proto-in'));
       const [namespace] = def.protoIn.split('.');
       const root = await protobuf.load(
-        `/Users/sergiovazquez/Projects/next-base/lib/data/src/proto/${namespace}.proto`,
+        `${protoDirectoryPath}${namespace}.proto`,
       );
       ProtoClassIn = root.lookupType(`${def.protoIn}`);
     }
@@ -159,10 +164,10 @@ export const createRequestHandler = <
       request.headers.get('proto-out') == 'true' &&
       def.protoOut
     ) {
-      console.log('out', request.headers.get('proto-out'));
       const [namespace] = def.protoOut.split('.');
+      console.log(`${protoDirectoryPath}${namespace}.proto`);
       const root = await protobuf.load(
-        `/Users/sergiovazquez/Projects/next-base/lib/data/src/proto/${namespace}.proto`,
+        `${protoDirectoryPath}${namespace}.proto`,
       );
       ProtoClassOut = root.lookupType(`${def.protoOut}`);
       responseObject = ProtoClassOut.fromObject(responseObject);
