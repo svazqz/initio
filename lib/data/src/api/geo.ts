@@ -27,4 +27,24 @@ export const getGeoData = createRequestHandler({
     queryParams: GeoSchemas.Schemas.Coordinates,
     response: GeoSchemas.Schemas.LocationData,
   },
+  endpoint: '/geo',
+});
+
+export const postGeoData = createRequestHandler({
+  handler: async (_request, _queryParams, payload) => {
+    const lat = payload?.latitude;
+    const long = payload?.longitude;
+    const locationResponse = await fetch(
+      `https://geocode.xyz/${lat},${long}?json=1`,
+    );
+    const locationData = await locationResponse.json();
+    return locationData.standard || locationData;
+  },
+  schemas: {
+    payload: GeoSchemas.Schemas.Coordinates,
+    response: GeoSchemas.Schemas.LocationData,
+  },
+  endpoint: '/geo',
+  method: 'POST',
+  proto: 'geo.Coordinates',
 });

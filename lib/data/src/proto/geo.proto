@@ -1,0 +1,7 @@
+package geo;
+syntax = "proto3";
+
+message Coordinates {
+  required double latitude = 1;
+  required double longitude = 2;
+}
