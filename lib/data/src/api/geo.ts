@@ -13,6 +13,11 @@ export const getGeoList = createRequestHandler({
 });
 
 export const getGeoData = createRequestHandler({
+  endpoint: '/geo',
+  schemas: {
+    queryParams: GeoSchemas.Schemas.Coordinates,
+    response: GeoSchemas.Schemas.LocationData,
+  },
   handler: async (request) => {
     const searchParams = request.nextUrl.searchParams;
     const lat = searchParams.get('latitude');
@@ -23,14 +28,17 @@ export const getGeoData = createRequestHandler({
     const locationData = await locationResponse.json();
     return locationData.standard || locationData;
   },
-  schemas: {
-    queryParams: GeoSchemas.Schemas.Coordinates,
-    response: GeoSchemas.Schemas.LocationData,
-  },
-  endpoint: '/geo',
 });
 
 export const postGeoData = createRequestHandler({
+  method: 'POST',
+  endpoint: '/geo',
+  schemas: {
+    payload: GeoSchemas.Schemas.Coordinates,
+    response: GeoSchemas.Schemas.LocationData,
+  },
+  protoIn: 'geo.Coordinates',
+  protoOut: 'geo.LocationData',
   handler: async (_request, _queryParams, payload) => {
     const lat = payload?.latitude;
     const long = payload?.longitude;
@@ -38,13 +46,11 @@ export const postGeoData = createRequestHandler({
       `https://geocode.xyz/${lat},${long}?json=1`,
     );
     const locationData = await locationResponse.json();
-    return locationData.standard || locationData;
+    const fullData = locationData.standard || locationData;
+    return {
+      city: fullData.city,
+      state: fullData.state,
+      country: fullData.country,
+    };
   },
-  schemas: {
-    payload: GeoSchemas.Schemas.Coordinates,
-    response: GeoSchemas.Schemas.LocationData,
-  },
-  endpoint: '/geo',
-  method: 'POST',
-  proto: 'geo.Coordinates',
 });
