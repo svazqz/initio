@@ -96,7 +96,7 @@ export const createRequestHandler = <
   const _def = {
     method: 'get',
     ...def,
-    ...{ endpoint: `/api/${def.endpoint || ''}` },
+    ...{ endpoint: `${def.endpoint || ''}` },
   };
 
   const requestHandler = async (

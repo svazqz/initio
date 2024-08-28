@@ -1,16 +1,16 @@
-import { createRequestHandler } from '../../../../lib/data/src/common';
+import { createRequestHandler } from '../../../../lib/data/src/common/server';
 import { Geo as GeoSchemas } from '../schemas';
-import { Geo as GeoModel } from '../models';
+// import { Geo as GeoModel } from '../models';
 
-export const getGeoList = createRequestHandler({
-  handler: async (request) => {
-    const allLocations = await GeoModel.getAllLatLong();
-    return allLocations;
-  },
-  schemas: {
-    response: GeoSchemas.Schemas.CoordinatesList,
-  },
-});
+// export const getGeoList = createRequestHandler({
+//   handler: async (request) => {
+//     const allLocations = await GeoModel.getAllLatLong();
+//     return allLocations;
+//   },
+//   schemas: {
+//     response: GeoSchemas.Schemas.CoordinatesList,
+//   },
+// });
 
 export const getGeoData = createRequestHandler({
   endpoint: '/geo',

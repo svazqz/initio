@@ -2,6 +2,24 @@
 
 NextBase is an innovative project designed to streamline the development of new applications and their accompanying documentation. Leveraging cutting-edge technologies—Typescript, Next.js, Zod, and the zod-to-openapi library—NextBase significantly reduces the overhead typically associated with these processes.
 
+## Getting started
+
+### Prerequisites
+
+- pnpm v8.6.11
+- nx v17.1.1
+- node v18.17.0
+- vscode
+- Nx Console (extension for vscode)
+
+### Set up project
+
+Once you have downloaded the project run the `pnpm i` command in the root of the project. Then navigate to `lib/ui` and run again `pnpm i`.
+
+From Nx Console run the build command inside the ui lib, this will create the corresponding ui components so thei can be imported from the apps (currently this is the only way to have a cross app ui lib, since the components are no preprocessed properly when they are called directly from the lib).
+
+Create a `.env.local` file under the next-base app and add the following `NEXT_PUBLIC_BASE_API_URL=http://localhost:4200/api`
+
 ## Core Concepts
 
 ###Schema
@@ -61,7 +79,9 @@ export const getGeoList = createRequestHandler({
 });
 ```
 
-The previous concepts allow also to get the following open API definition out of the box by runing the nx command `nx run lib-data:exporter` (WIP to improve the way consumers are loaded in the exporter):
+The definition of the api request handlers allow us to get the following open API definition out of the box by runing the nx command `nx run lib-data:exporter` (WIP to improve the way consumers are loaded in the exporter):
+
+_Note:_ In order to use this feature you have to explicitly add the api files you want to be exported in the lib/data/src/open-api/exporter.ts file; also all the imports in any app needs to be made using the relative path notation, since the command for exporting the info does not load the tsconfig properly. You can take a look of this in the geo demo implementation.
 
 ```json
 {
@@ -131,3 +151,9 @@ The previous concepts allow also to get the following open API definition out of
 ```
 
 NextBase isn't just a tool; it's a paradigm shift in how developers approach app creation and documentation. By integrating these advanced technologies, NextBase empowers developers to build faster, more reliable applications with less effort. Join the future of app development with NextBase, and experience the next level of innovation.
+
+## Curren known issues
+
+- Cannot use models on the api definitions since it will require backend libraries and so will thrown an exception when consumers are used.
+- API list needs to be created manually on the lib/data library
+- The routes/paths to the lib/data/common need to be relative, since ts routes from tsconfig are not resolved porperly when exporting api definitions.

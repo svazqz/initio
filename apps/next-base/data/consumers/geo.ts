@@ -1,4 +1,4 @@
-import { apiConsumer } from '@next-base/lib-data/common';
-import { getGeoList } from '../api';
+import { apiConsumer } from '../../../../lib/data/src/common/client';
+import { postGeoData } from '../api';
 
-export const getGeoListConsumer = apiConsumer(getGeoList.definition);
+export const getGeoDataConsumer = apiConsumer(postGeoData.definition);

@@ -1,4 +1,4 @@
-import { getGeoData, postGeoData } from '@next-base/lib-data/api';
+import { getGeoData, postGeoData } from '../../../data/api/geo';
 
 export const GET = getGeoData;
 
