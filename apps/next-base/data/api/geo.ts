@@ -1,4 +1,4 @@
-import { createRequestHandler } from '../common/server';
+import { createRequestHandler } from '../../../../lib/data/src/common';
 import { Geo as GeoSchemas } from '../schemas';
 import { Geo as GeoModel } from '../models';
 

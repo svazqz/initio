@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-namespace */
-import { db } from '../common/db';
+import { db } from '../../../../lib/data/src//common/db';
 import { Geo as GeoSchemas } from '../schemas';
 import { Geo as GeoEntity } from '../entities';
-import { DTO } from '../common/utils';
+import { DTO } from '../../../../lib/data/src//common/utils';
 
 export class Geo {
   constructor() {}
