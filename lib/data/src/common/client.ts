@@ -67,6 +67,7 @@ export const _apiConsumer =
     const queryKey = [
       endpointKey,
       ...Object.values(consumerPayload.urlParams || {}),
+      ...Object.values(consumerPayload.body || {}),
     ] as string[];
 
     const query = useQuery({
@@ -76,7 +77,7 @@ export const _apiConsumer =
           `${process.env.NEXT_PUBLIC_BASE_API_URL}${endpointKey}`,
           {
             method,
-            body: consumerPayload.body,
+            body: JSON.stringify(consumerPayload.body),
             headers: consumerPayload.headers,
           },
         );
