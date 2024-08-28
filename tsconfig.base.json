@@ -16,14 +16,9 @@
     "strictNullChecks": true,
     "baseUrl": ".",
     "paths": {
+      "@next-base/app/api": ["apps/next-base/data/api/index.ts"],
       "@next-base/lib-auth": ["lib/auth/src/index.ts"],
-      "@next-base/lib-data/api": ["lib/data/src/api/index.ts"],
-      "@next-base/lib-data/consumers": ["lib/data/src/consumers/index.ts"],
-      "@next-base/lib-data/models": ["lib/data/src/models/index.ts"],
-      "@next-base/lib-data/schemas": ["lib/data/src/schemas/index.ts"],
-      "@next-base/lib-data/validation-schemas": [
-        "lib/data/src/validation-schemas/index.ts"
-      ],
+      "@next-base/lib-data/common": ["./lib/data/src/common/index.ts"],
       "@next-base/lib-data": ["lib/data/src/index.ts"],
       "@next-base/lib-ui/style.css": ["./dist/lib/ui/style.css"],
       "@next-base/lib-ui": ["./dist/lib/ui"],
@@ -32,7 +27,7 @@
       "@next-base/lib-ui/utils": ["lib/ui/src/utils.ts"],
       "@services": ["apps/next-base/services/index.ts"]
     },
-    "types": ["react/next"]
+    "types": ["node", "react/next"]
   },
   "exclude": ["node_modules", "tmp"]
 }
