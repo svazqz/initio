@@ -11,7 +11,7 @@ const registry = new OpenAPIRegistry();
 extendZodWithOpenApi(z);
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-const apiDefinitions = require('../../../../apps/next-base/data/api');
+const apiDefinitions = require('../../../../apps/next-base/data/geo/api');
 
 try {
   Object.entries(apiDefinitions).forEach(([key, { apiConfig }]: any) => {

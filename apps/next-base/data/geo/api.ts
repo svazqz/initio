@@ -1,5 +1,5 @@
 import { createRequestHandler } from '../../../../lib/data/src/common/server';
-import { Geo as GeoSchemas } from '../schemas';
+import { Geo as GeoSchemas } from './schemas';
 
 export const getGeoData = createRequestHandler({
   endpoint: '/geo',
