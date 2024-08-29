@@ -16,14 +16,15 @@ NextBase is an innovative project designed to streamline the development of new 
 
 Once you have downloaded the project run the `pnpm i` command in the root of the project. Then navigate to `lib/ui` and run again `pnpm i`.
 
-From Nx Console run the build command inside the ui lib, this will create the corresponding ui components so thei can be imported from the apps (currently this is the only way to have a cross app ui lib, since the components are no preprocessed properly when they are called directly from the lib).
+From Nx Console run the build command inside the `lib/ui` folder, this will create the corresponding ui components so they can be imported from the apps (currently this is the only way to have a cross app `lib/ui`, since the components are no preprocessed properly when they are called directly from the lib). If you perform any changes or add new components to the `lib/ui` you'll have to run the `build` command again.
 
 Create a `.env.local` file under the next-base app and add the following `NEXT_PUBLIC_BASE_API_URL=http://localhost:4200/api`
 
 ## Core Concepts
 
-###Schema
-At the heart of NextBase is the Schema, a ZodObject that defines the structure for key elements of an API request, including query parameters, URL parameters, request bodies, and responses. This robust schema validation ensures consistency and reliability across your application.
+### Schema
+
+At the heart of NextBase is the Schema, a ZodObject that defines the structure for key elements of an API request, including query parameters, URL parameters, request bodies, and responses. This robust schema validation ensures consistency and reliability across your application. The schemas will be located on each app acording to the domain of each app. This way every app can set their own scope foe each schema. An example of this schema can be found in the `app/next-base/data/schemas` folder in the `geo.ts` file:
 
 ```typescript
 /* eslint-disable @typescript-eslint/no-namespace */
@@ -48,40 +49,63 @@ export namespace Geo {
 }
 ```
 
-### Consumer
-
-In NextBase, consumers are the definitive source of truth, delineating the Zod schemas involved in every API call. This consumer-centric approach enhances clarity and maintainability, ensuring that API interactions are consistently validated and documented.
-
-```typescript
-import { apiConsumer } from '../common/client';
-import { getGeoList } from '../api';
-
-export const getGeoListConsumer = apiConsumer(getGeoList.definition);
-```
-
 ### Request Handler
 
-NextBase revolutionizes request handling by tying it directly to the consumer definitions. This alignment minimizes discrepancies between schema definitions and promotes seamless adaptability. Whether integrating a new serverless function or evolving existing backend services, the request handler ensures that API definitions remain stable and consistent.
+NextBase proposes a request/api driven development, this means that all the api endpoins are defined first setting the input, output, params and query formats so when handler function is defined it has access to auto complete features and the same happens with consumer. An example of a request definition can be as follow:
 
 ```typescript
-import { createRequestHandler } from '../common/server';
+import { createRequestHandler } from '../../../../lib/data/src/common/server';
 import { Geo as GeoSchemas } from '../schemas';
-import { Geo as GeoModels } from '../models';
 
-export const getGeoList = createRequestHandler({
-  handler: async (request) => {
-    const allLocations = await GeoModels.Model.getAllLatLong();
-    return allLocations;
-  },
+export const postGeoData = createRequestHandler({
+  method: 'POST',
+  endpoint: '/geo',
   schemas: {
-    response: GeoSchemas.Schemas.CoordinatesList,
+    payload: GeoSchemas.Schemas.Coordinates,
+    response: GeoSchemas.Schemas.LocationData,
   },
+  protoIn: 'geo.Coordinates',
+  protoOut: 'geo.LocationData',
 });
 ```
 
-The definition of the api request handlers allow us to get the following open API definition out of the box by runing the nx command `nx run lib-data:exporter` (WIP to improve the way consumers are loaded in the exporter):
+And the used in the nex api definition as follows:
 
-_Note:_ In order to use this feature you have to explicitly add the api files you want to be exported in the lib/data/src/open-api/exporter.ts file; also all the imports in any app needs to be made using the relative path notation, since the command for exporting the info does not load the tsconfig properly. You can take a look of this in the geo demo implementation.
+```typescript
+import { postGeoData } from '../../../data/api/geo';
+
+export const POST =
+  postGeoData.setHandler &&
+  postGeoData.setHandler(async (_request, _queryParams, payload) => {
+    const lat = payload?.latitude;
+    const long = payload?.longitude;
+    const locationResponse = await fetch(
+      `https://geocode.xyz/${lat},${long}?json=1`,
+    );
+    const locationData = await locationResponse.json();
+    const fullData = locationData.standard || locationData;
+    return {
+      city: fullData.city,
+      state: fullData.state,
+      country: fullData.country,
+    };
+  });
+```
+
+### Consumer
+
+In NextBase, consumers are objects based in a request definition that uses react query internally to perform the comunication to the api. Even if api is not implemented in the next app, the definition of it will be helpful to use it on the auto generation of documentation and also the consumers. Here is an example to a consumer using the previous definition:
+
+```typescript
+import { apiConsumer } from '../../../../lib/data/src/common/client';
+import { postGeoData } from '../api';
+
+export const getGeoDataConsumer = apiConsumer(postGeoData);
+```
+
+### Generate OpenAPI docs
+
+The definition of the api request handlers allow us to get the following open API definition out of the box by runing the nx command `nx run lib-data:exporter` (WIP to improve the way consumers are loaded in the exporter):
 
 ```json
 {
@@ -150,10 +174,13 @@ _Note:_ In order to use this feature you have to explicitly add the api files yo
 }
 ```
 
-NextBase isn't just a tool; it's a paradigm shift in how developers approach app creation and documentation. By integrating these advanced technologies, NextBase empowers developers to build faster, more reliable applications with less effort. Join the future of app development with NextBase, and experience the next level of innovation.
+_Note:_ In order to use this feature you have to explicitly add the api files you want to be exported in the lib/data/src/open-api/exporter.ts file; also all the imports in any app needs to be made using the relative path notation, since the command for exporting the info does not load the tsconfig properly. You can take a look of this in the geo demo implementation.
 
 ## Curren known issues
 
-- Cannot use models on the api definitions since it will require backend libraries and so will thrown an exception when consumers are used.
 - API list needs to be created manually on the lib/data library
 - The routes/paths to the lib/data/common need to be relative, since ts routes from tsconfig are not resolved porperly when exporting api definitions.
+
+## Changelog
+
+- ~~Cannot use models on the api definitions since it will require backend libraries and so will thrown an exception when consumers are used.~~ Models can now be used in server functions, since exporter flow will not require such functions, it will use only the api definitions.
