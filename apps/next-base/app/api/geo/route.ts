@@ -1,4 +1,4 @@
-import { getGeoData, postGeoData } from '../../../data/api/geo';
+import { getGeoData, postGeoData } from '../../../data/geo/api';
 
 export const GET =
   getGeoData.setHandler &&
