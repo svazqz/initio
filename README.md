@@ -184,3 +184,8 @@ _Note:_ In order to use this feature you have to explicitly add the api files yo
 ## Changelog
 
 - ~~Cannot use models on the api definitions since it will require backend libraries and so will thrown an exception when consumers are used.~~ Models can now be used in server functions, since exporter flow will not require such functions, it will use only the api definitions.
+
+
+## Donate
+
+[![paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=BTJPCXNPH43YC)
