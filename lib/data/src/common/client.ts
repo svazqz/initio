@@ -7,6 +7,7 @@ import {
 } from '@tanstack/react-query';
 import { ZodType } from 'zod';
 import { DTO } from './utils';
+import { ServerFnDefinition } from './server';
 
 type APIConsumerPayload<URLParams, QueryParams, Body> = {
   urlParams?: URLParams;
@@ -93,17 +94,9 @@ export const apiConsumer = <
   QueryParams extends ZodType,
   Body extends ZodType,
   Response extends ZodType,
->(apiDefinition: {
-  handler: any;
-  schemas?: {
-    urlArgs?: URLParams;
-    queryParams?: QueryParams;
-    payload?: Body;
-    response?: Response;
-  };
-  endpoint?: string;
-  method?: string;
-}) => {
+>(
+  apiDefinition: ServerFnDefinition<URLParams, QueryParams, Body, Response>,
+) => {
   const r = _apiConsumer<URLParams, QueryParams, Body, Response>(
     apiDefinition?.endpoint || '/',
     apiDefinition.method || 'get',

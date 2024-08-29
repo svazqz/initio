@@ -14,17 +14,31 @@ type NextBaseRequest<P, Q> = NextRequest & {
   nextUrl: { searchParams: { get: (key: keyof Q) => any } };
 };
 
-type ServerFnDefinition<
+type HandlerFn<
+  URLParams extends ZodType,
+  QueryParams extends ZodType,
+  Body extends ZodType,
+  Response extends ZodType,
+> = (
+  request: NextBaseRequest<z.infer<URLParams>, z.infer<QueryParams>>,
+  queryParams?: QueryParams,
+  payload?: DTO<Body>,
+) => Promise<z.infer<Response>>;
+
+type NextRequestHandler<
+  URLParams extends ZodType,
+  QueryParams extends ZodType,
+  Response extends ZodType,
+> = (
+  request: NextBaseRequest<z.infer<URLParams>, z.infer<QueryParams>>,
+) => Promise<z.infer<Response>>;
+
+export type ServerFnDefinition<
   URLParams extends ZodType,
   QueryParams extends ZodType,
   Body extends ZodType,
   Response extends ZodType,
 > = {
-  handler: (
-    request: NextBaseRequest<z.infer<URLParams>, z.infer<QueryParams>>,
-    queryParams?: QueryParams,
-    payload?: DTO<Body>,
-  ) => Promise<z.infer<Response>>;
   schemas?: {
     urlArgs?: URLParams;
     queryParams?: QueryParams;
@@ -35,6 +49,9 @@ type ServerFnDefinition<
   method?: string;
   protoIn?: string;
   protoOut?: string;
+  setHandler?: (
+    handlerFn: HandlerFn<URLParams, QueryParams, Body, Response>,
+  ) => NextRequestHandler<URLParams, QueryParams, Response>;
 };
 
 function validateQueryParams<
@@ -92,103 +109,12 @@ export const createRequestHandler = <
   Response extends ZodType,
 >(
   def: ServerFnDefinition<URLParams, QueryParams, Body, Response>,
-) => {
+): ServerFnDefinition<URLParams, QueryParams, Body, Response> => {
   const _def = {
     method: 'get',
     ...def,
     ...{ endpoint: `${def.endpoint || ''}` },
   };
-
-  const requestHandler = async (
-    request: NextBaseRequest<z.infer<URLParams>, z.infer<QueryParams>>,
-  ): Promise<NextResponse<z.infer<Response>>> => {
-    let queryParams: QueryParams | undefined = undefined;
-    let parsedPayload: Body | undefined = undefined;
-    let ProtoClassIn: any = undefined;
-    let ProtoClassOut: any = undefined;
-
-    if (
-      request.headers.get('content-type') === 'application/x-protobuf' &&
-      request.headers.get('proto-in') == 'true' &&
-      def.protoIn
-    ) {
-      const [namespace] = def.protoIn.split('.');
-      const root = await protobuf.load(
-        `${protoDirectoryPath}${namespace}.proto`,
-      );
-      ProtoClassIn = root.lookupType(`${def.protoIn}`);
-    }
-
-    try {
-      if (_def.schemas?.queryParams) {
-        queryParams = validateQueryParams(request, _def) as QueryParams;
-      }
-      if (_def.schemas?.payload) {
-        parsedPayload = (await validatePayload(
-          request,
-          _def,
-          ProtoClassIn,
-        )) as Body;
-      }
-    } catch (e) {
-      return new NextResponse(JSON.stringify(e), {
-        status: 500, // Implement better error handlig... so responses are not always 200
-        headers: { 'content-type': 'application/json' },
-      });
-    }
-
-    const handlerReturn = await _def.handler(
-      request,
-      queryParams,
-      parsedPayload,
-    );
-
-    if (_def.schemas?.response) {
-      try {
-        _def.schemas?.response?.parse(handlerReturn);
-      } catch (e) {
-        return new NextResponse(JSON.stringify(e), {
-          status: 500, // Implement better error handlig... so responses are not always 200
-          headers: { 'content-type': 'application/json' },
-        });
-      }
-    }
-
-    let responseObject =
-      typeof handlerReturn === 'object'
-        ? handlerReturn
-        : { value: handlerReturn };
-
-    if (
-      request.headers.get('content-type') === 'application/x-protobuf' &&
-      request.headers.get('proto-out') == 'true' &&
-      def.protoOut
-    ) {
-      const [namespace] = def.protoOut.split('.');
-      console.log(`${protoDirectoryPath}${namespace}.proto`);
-      const root = await protobuf.load(
-        `${protoDirectoryPath}${namespace}.proto`,
-      );
-      ProtoClassOut = root.lookupType(`${def.protoOut}`);
-      responseObject = ProtoClassOut.fromObject(responseObject);
-      responseObject = ProtoClassOut.encode(responseObject).finish();
-    }
-
-    return new NextResponse(
-      ProtoClassOut ? (responseObject as any) : JSON.stringify(responseObject),
-      {
-        status: 200,
-        headers: ProtoClassOut
-          ? {
-              'content-type': 'application/x-protobuf',
-              accept: 'application/x-protobuf',
-            }
-          : { 'content-type': 'application/json' },
-      },
-    );
-  };
-
-  requestHandler.definition = _def;
 
   if (process.env.API_EXPORTER) {
     const apiConfig = {
@@ -209,8 +135,102 @@ export const createRequestHandler = <
         },
       },
     } as RouteConfig;
-    (requestHandler as any).apiConfig = apiConfig;
+    (_def as any).apiConfig = apiConfig;
   }
 
-  return requestHandler;
+  _def.setHandler = (apiHandler) => {
+    const requestHandler = async (
+      request: NextBaseRequest<z.infer<URLParams>, z.infer<QueryParams>>,
+    ): Promise<NextResponse<z.infer<Response>>> => {
+      let queryParams: QueryParams | undefined = undefined;
+      let parsedPayload: Body | undefined = undefined;
+      let ProtoClassIn: any = undefined;
+      let ProtoClassOut: any = undefined;
+
+      if (
+        request.headers.get('content-type') === 'application/x-protobuf' &&
+        request.headers.get('proto-in') == 'true' &&
+        def.protoIn
+      ) {
+        const [namespace] = def.protoIn.split('.');
+        const root = await protobuf.load(
+          `${protoDirectoryPath}${namespace}.proto`,
+        );
+        ProtoClassIn = root.lookupType(`${def.protoIn}`);
+      }
+
+      try {
+        if (_def.schemas?.queryParams) {
+          queryParams = validateQueryParams(request, _def) as QueryParams;
+        }
+        if (_def.schemas?.payload) {
+          parsedPayload = (await validatePayload(
+            request,
+            _def,
+            ProtoClassIn,
+          )) as Body;
+        }
+      } catch (e) {
+        return new NextResponse(JSON.stringify(e), {
+          status: 500, // Implement better error handlig... so responses are not always 200
+          headers: { 'content-type': 'application/json' },
+        });
+      }
+
+      const handlerReturn = await apiHandler(
+        request,
+        queryParams,
+        parsedPayload,
+      );
+
+      if (_def.schemas?.response) {
+        try {
+          _def.schemas?.response?.parse(handlerReturn);
+        } catch (e) {
+          return new NextResponse(JSON.stringify(e), {
+            status: 500, // Implement better error handlig... so responses are not always 200
+            headers: { 'content-type': 'application/json' },
+          });
+        }
+      }
+
+      let responseObject =
+        typeof handlerReturn === 'object'
+          ? handlerReturn
+          : { value: handlerReturn };
+
+      if (
+        request.headers.get('content-type') === 'application/x-protobuf' &&
+        request.headers.get('proto-out') == 'true' &&
+        def.protoOut
+      ) {
+        const [namespace] = def.protoOut.split('.');
+        console.log(`${protoDirectoryPath}${namespace}.proto`);
+        const root = await protobuf.load(
+          `${protoDirectoryPath}${namespace}.proto`,
+        );
+        ProtoClassOut = root.lookupType(`${def.protoOut}`);
+        responseObject = ProtoClassOut.fromObject(responseObject);
+        responseObject = ProtoClassOut.encode(responseObject).finish();
+      }
+
+      return new NextResponse(
+        ProtoClassOut
+          ? (responseObject as any)
+          : JSON.stringify(responseObject),
+        {
+          status: 200,
+          headers: ProtoClassOut
+            ? {
+                'content-type': 'application/x-protobuf',
+                accept: 'application/x-protobuf',
+              }
+            : { 'content-type': 'application/json' },
+        },
+      );
+    };
+    return requestHandler;
+  };
+
+  return _def;
 };
