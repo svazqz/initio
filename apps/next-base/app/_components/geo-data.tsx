@@ -1,7 +1,10 @@
 'use client';
 import { useCallback, useEffect, useState } from 'react';
+import { apiConsumer } from '../../../../lib/data/src/common/client';
 import { Button, Input } from '@next-base/lib-ui';
-import { getGeoDataConsumer } from 'apps/next-base/data/consumers';
+import { postGeoData } from 'apps/next-base/data/geo';
+
+const getGeoDataConsumer = apiConsumer(postGeoData);
 
 const GeoData = function Index() {
   const [latitude, setLatitude] = useState(19.3906594);
@@ -13,22 +16,10 @@ const GeoData = function Index() {
     },
   });
 
-  // useEffect(() => {
-  //   query.refetch();
-  // }, [queryKey]);
-
   const onClick = useCallback(() => {
     setLatitude(21.92081);
     setLongitude(-102.33495);
   }, []);
-
-  if (query.isLoading) {
-    return <span>Loading...</span>;
-  }
-
-  if (query.isError) {
-    return <span>Error...</span>;
-  }
 
   return (
     <>
