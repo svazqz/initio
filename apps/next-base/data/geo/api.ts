@@ -16,6 +16,4 @@ export const postGeoData = createRequestHandler({
     payload: GeoSchemas.Schemas.Coordinates,
     response: GeoSchemas.Schemas.LocationData,
   },
-  protoIn: 'geo.Coordinates',
-  protoOut: 'geo.LocationData',
 });
