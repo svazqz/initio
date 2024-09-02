@@ -72,7 +72,7 @@ export const _apiConsumer =
     ] as string[];
 
     const query = useQuery({
-      queryKey: queryKey,
+      queryKey,
       queryFn: async () => {
         const response = await fetch(
           `${process.env.NEXT_PUBLIC_BASE_API_URL}${endpointKey}`,
@@ -82,7 +82,8 @@ export const _apiConsumer =
             headers: consumerPayload.headers,
           },
         );
-        return response.json() as unknown as Response;
+        const jsonResponse = (await response.json()) as unknown as Response;
+        return jsonResponse;
       },
     });
 

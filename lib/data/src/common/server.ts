@@ -1,14 +1,11 @@
 import * as protobuf from 'protobufjs';
 import { RouteConfig } from '@asteasolutions/zod-to-openapi';
 import { NextRequest, NextResponse } from 'next/server';
-import { ZodBoolean, ZodNumber, ZodObject, ZodType, z } from 'zod';
+import { ZodBoolean, ZodNumber, ZodType, z } from 'zod';
 import { DTO } from './utils';
 import path from 'path';
 
-const protoDirectoryPath = path.join(
-  __dirname,
-  '../../../../../../../lib/data/src/proto/',
-);
+const protoDirectoryPath = path.join(__dirname, '../../../../../../../apps/');
 
 type NextBaseRequest<P, Q> = NextRequest & {
   nextUrl: { searchParams: { get: (key: keyof Q) => any } };
@@ -93,8 +90,12 @@ async function validatePayload<
   let parsedPayload: Body | undefined = undefined;
 
   if (ProtoClass) {
-    const lResponse = await request.arrayBuffer();
-    parsedPayload = ProtoClass.decode(Buffer.from(lResponse));
+    try {
+      const lResponse = await request.arrayBuffer();
+      parsedPayload = ProtoClass.decode(Buffer.from(lResponse));
+    } catch (e) {
+      throw new Error('Protocol buffer parsing error');
+    }
   } else {
     parsedPayload = await request.json();
   }
@@ -146,17 +147,31 @@ export const createRequestHandler = <
       let parsedPayload: Body | undefined = undefined;
       let ProtoClassIn: any = undefined;
       let ProtoClassOut: any = undefined;
+      let protoRoot;
+      let lookupIn;
+      let lookupOut;
 
       if (
-        request.headers.get('content-type') === 'application/x-protobuf' &&
-        request.headers.get('proto-in') == 'true' &&
-        def.protoIn
+        (request.headers.get('content-type') === 'application/x-protobuf' ||
+          request.headers.get('accept') === 'application/x-protobuf') &&
+        (def.protoIn || def.protoOut)
       ) {
-        const [namespace] = def.protoIn.split('.');
-        const root = await protobuf.load(
-          `${protoDirectoryPath}${namespace}.proto`,
+        const [app, namespace] = (def.protoIn || def.protoOut || '').split('.');
+
+        protoRoot = await protobuf.load(
+          `${protoDirectoryPath}${app}/data/${namespace}/schemas.proto`,
         );
-        ProtoClassIn = root.lookupType(`${def.protoIn}`);
+
+        lookupIn = (def.protoIn || '').replace(`${app}.`, '');
+        lookupOut = (def.protoOut || '').replace(`${app}.`, '');
+      }
+
+      if (
+        protoRoot &&
+        request.headers.get('accept') === 'application/x-protobuf' &&
+        lookupIn !== ''
+      ) {
+        ProtoClassIn = protoRoot.lookupType(lookupIn);
       }
 
       try {
@@ -171,8 +186,8 @@ export const createRequestHandler = <
           )) as Body;
         }
       } catch (e) {
-        return new NextResponse(JSON.stringify(e), {
-          status: 500, // Implement better error handlig... so responses are not always 200
+        return new NextResponse(JSON.stringify({ error: e.message }), {
+          status: 500,
           headers: { 'content-type': 'application/json' },
         });
       }
@@ -187,8 +202,8 @@ export const createRequestHandler = <
         try {
           _def.schemas?.response?.parse(handlerReturn);
         } catch (e) {
-          return new NextResponse(JSON.stringify(e), {
-            status: 500, // Implement better error handlig... so responses are not always 200
+          return new NextResponse(JSON.stringify({ error: e.message }), {
+            status: 500,
             headers: { 'content-type': 'application/json' },
           });
         }
@@ -200,16 +215,11 @@ export const createRequestHandler = <
           : { value: handlerReturn };
 
       if (
+        protoRoot &&
         request.headers.get('content-type') === 'application/x-protobuf' &&
-        request.headers.get('proto-out') == 'true' &&
-        def.protoOut
+        lookupOut !== ''
       ) {
-        const [namespace] = def.protoOut.split('.');
-        console.log(`${protoDirectoryPath}${namespace}.proto`);
-        const root = await protobuf.load(
-          `${protoDirectoryPath}${namespace}.proto`,
-        );
-        ProtoClassOut = root.lookupType(`${def.protoOut}`);
+        ProtoClassOut = protoRoot.lookupType(lookupOut);
         responseObject = ProtoClassOut.fromObject(responseObject);
         responseObject = ProtoClassOut.encode(responseObject).finish();
       }
@@ -223,7 +233,6 @@ export const createRequestHandler = <
           headers: ProtoClassOut
             ? {
                 'content-type': 'application/x-protobuf',
-                accept: 'application/x-protobuf',
               }
             : { 'content-type': 'application/json' },
         },
