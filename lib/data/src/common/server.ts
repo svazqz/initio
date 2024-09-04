@@ -122,9 +122,7 @@ export const createRequestHandler = <
       method: _def.method,
       path: _def.endpoint,
       summary: '',
-      request: {
-        query: (_def.schemas?.queryParams as any)?.openapi('Query Params'),
-      },
+      request: {},
       responses: {
         200: {
           description: '',
@@ -136,6 +134,29 @@ export const createRequestHandler = <
         },
       },
     } as RouteConfig;
+
+    if (_def.schemas?.queryParams) {
+      (apiConfig.request as any).query = (
+        _def.schemas?.queryParams as any
+      )?.openapi('Query Params');
+    }
+    if (_def.schemas?.payload) {
+      (apiConfig.request as any).body = {
+        description: 'Body',
+        content: {
+          'application/json': {
+            schema: _def.schemas?.payload,
+          },
+        },
+        required: true,
+      };
+    }
+    if (_def.schemas?.urlArgs) {
+      (apiConfig.request as any).params = (
+        _def.schemas?.urlArgs as any
+      )?.openapi('URL Params');
+    }
+
     (_def as any).apiConfig = apiConfig;
   }
 
