@@ -36,7 +36,7 @@ try {
     },
   );
 
-  console.log(result);
+  console.log(JSON.stringify(result, null, 2));
 } catch (e) {
   console.log(JSON.stringify(e));
 }
