@@ -118,6 +118,29 @@ const Faq = () => {
       },
       "POST": {
         "summary": "",
+        "requestBody": {
+          "description": "Body",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "latitude": {
+                    "type": "number"
+                  },
+                  "longitude": {
+                    "type": "number"
+                  }
+                },
+                "required": [
+                  "latitude",
+                  "longitude"
+                ]
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
             "description": "",

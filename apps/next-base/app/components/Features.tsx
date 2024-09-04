@@ -16,7 +16,7 @@ import 'ace-builds/src-noconflict/ext-language_tools';
 
 const Features = () => {
   return (
-    <div id="features" className="w-full bg-gray-900 text-white" id="features">
+    <div id="features" className="w-full bg-gray-900 text-white">
       <div className="container flex flex-col" style={{ maxWidth: '1100px' }}>
         <div id="zod-schemas" className="sm:flex items-center mb-14">
           <div className="sm:w-1/2">
