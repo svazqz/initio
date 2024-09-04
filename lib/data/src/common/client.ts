@@ -7,7 +7,7 @@ import {
 } from '@tanstack/react-query';
 import { ZodType } from 'zod';
 import { DTO } from './utils';
-import { ServerFnDefinition } from './server';
+import { ServerFnDefinition } from './server/types';
 
 type APIConsumerPayload<URLParams, QueryParams, Body> = {
   urlParams?: URLParams;
