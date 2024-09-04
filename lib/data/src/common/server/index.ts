@@ -48,9 +48,11 @@ export const createRequestHandler = <
       ) {
         const [app, namespace] = (def.protoIn || def.protoOut || '').split('.');
 
-        protoRoot = await protobuf.load(
-          `${protoDirectoryPath}${app}/data/${namespace}/schemas.proto`,
-        );
+        let path = `${protoDirectoryPath}${app}/data/${namespace}/schemas.proto`;
+        if (process.env.NODE_ENV === 'production') {
+          path = path.replace('/dist', '');
+        }
+        protoRoot = await protobuf.load(path);
 
         lookupIn = (def.protoIn || '').replace(`${app}.`, '');
         lookupOut = (def.protoOut || '').replace(`${app}.`, '');
