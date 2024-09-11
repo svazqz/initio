@@ -1,0 +1,17 @@
+syntax = "proto3";
+package geo;
+
+message Coordinates {
+  required double latitude = 1;
+  required double longitude = 2;
+}
+
+message CoordinatesList {
+  repeated Coordinates values = 1;
+}
+
+message LocationData {
+  string city = 1;
+  string state = 2;
+  string country = 3;
+}

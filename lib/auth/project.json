@@ -1,0 +1,33 @@
+{
+  "name": "lib-auth",
+  "$schema": "../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "lib-auth/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/lib-auth",
+        "main": "lib-auth/src/index.ts",
+        "tsConfig": "lib-auth/tsconfig.lib.json",
+        "assets": ["lib-auth/*.md"]
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["lib-auth/**/*.ts", "lib-auth/package.json"]
+      }
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "lib-auth/jest.config.ts"
+      }
+    }
+  },
+  "tags": []
+}

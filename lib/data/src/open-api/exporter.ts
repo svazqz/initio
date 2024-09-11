@@ -11,10 +11,13 @@ const registry = new OpenAPIRegistry();
 extendZodWithOpenApi(z);
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-const { useGetGeoByLatLongGet } = require('../consumers');
+const apiDefinitions = require('../../../../apps/next-base/data/geo/api');
 
 try {
-  registry.registerPath((useGetGeoByLatLongGet as any).apiConfig);
+  Object.entries(apiDefinitions).forEach(([key, { apiConfig }]: any) => {
+    registry.registerPath(apiConfig);
+  });
+
   const generator = new OpenApiGeneratorV3(registry.definitions);
 
   const result = generator.generateDocument({
@@ -26,14 +29,14 @@ try {
   });
 
   fs.writeFileSync(
-    `${__dirname}/openapi-docs.json`,
+    `${__dirname}/../../out/openapi-docs.json`,
     JSON.stringify(result, null, 2),
     {
       encoding: 'utf-8',
     },
   );
 
-  console.log(result);
+  console.log(JSON.stringify(result, null, 2));
 } catch (e) {
   console.log(JSON.stringify(e));
 }

@@ -9,7 +9,8 @@
       "outputs": ["{options.outputPath}"],
       "defaultConfiguration": "production",
       "options": {
-        "outputPath": "dist/apps/next-base"
+        "outputPath": "dist/apps/next-base",
+        "postcssConfig": "apps/next-base/postcss.config.js"
       },
       "configurations": {
         "development": {
@@ -39,7 +40,8 @@
     "export": {
       "executor": "@nx/next:export",
       "options": {
-        "buildTarget": "next-base:build:production"
+        "buildTarget": "next-base:build:production",
+        "postcssConfig": "apps/next-base/postcss.config.js"
       }
     },
     "test": {

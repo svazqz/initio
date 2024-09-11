@@ -22,7 +22,14 @@
       "executor": "nx:run-commands",
       "outputs": [],
       "options": {
-        "command": "API_EXPORTER=true ts-node lib/data/src/open-api/exporter.ts"
+        "command": "API_EXPORTER=true ts-node --project ./lib/data/tsconfig.lib.json lib/data/src/open-api/exporter.ts"
+      }
+    },
+    "proto-bundler": {
+      "executor": "nx:run-commands",
+      "outputs": [],
+      "options": {
+        "command": "ts-node --project ./lib/data/tsconfig.lib.json ./lib/data/src/proto/index.ts"
       }
     }
   },

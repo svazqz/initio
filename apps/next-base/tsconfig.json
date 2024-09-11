@@ -17,18 +17,6 @@
       }
     ],
     "types": ["jest", "node"],
-    "paths": {
-      "@next-base/lib/ui": ["lib/ui/src/index.ts"],
-      "@next-base/api/consumers": ["lib/ui/src/consumers/index.ts"],
-      "@next-base/lib/data": ["lib/data/src/index.ts"],
-      "@services": ["apps/next-base/services/index.ts"],
-      "@next-base/lib-data/models": ["lib/data/src/models/index.ts"],
-      "@next-base/lib-data/entities": ["lib/data/src/entities/index.ts"],
-      "@next-base/lib-data/consumers": ["lib/data/src/consumers/index.ts"],
-      "@next-base/services/kyc": ["services/kyc/src/index.ts"],
-      "@next-base/services/payments": ["services/payments/src/index.ts"],
-      "@next-base/lib/providers": ["lib/providers/src/index.ts"]
-    }
   },
   "include": [
     "**/*.ts",
@@ -37,8 +25,7 @@
     "**/*.jsx",
     "../../apps/next-base/.next/types/**/*.ts",
     "../../dist/apps/next-base/.next/types/**/*.ts",
-    "next-env.d.ts"
-  ],
+    "next-env.d.ts"],
   "exclude": [
     "node_modules",
     "jest.config.ts",
