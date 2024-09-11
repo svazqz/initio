@@ -10,7 +10,7 @@ export const getGeoData = createRequestHandler({
 });
 
 export const postGeoData = createRequestHandler({
-  method: 'POST',
+  method: 'post',
   endpoint: '/geo',
   schemas: {
     payload: GeoSchemas.Schemas.Coordinates,

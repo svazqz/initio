@@ -18,11 +18,11 @@
         "jestConfig": "lib/data/jest.config.ts"
       }
     },
-    "exporter": {
+    "open-api-generator": {
       "executor": "nx:run-commands",
       "outputs": [],
       "options": {
-        "command": "API_EXPORTER=true ts-node --project ./lib/data/tsconfig.lib.json lib/data/src/open-api/exporter.ts"
+        "command": "API_EXPORTER=true ts-node --project ./lib/data/tsconfig.lib.json lib/data/src/open-api/index.ts"
       }
     },
     "proto-bundler": {

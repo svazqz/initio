@@ -31,6 +31,7 @@ try {
   exec(command, (err, stdout, stderr) => {
     if (err) {
       // node couldn't execute the command
+      throw new Error(JSON.stringify(err));
       return;
     }
 

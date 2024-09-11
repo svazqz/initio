@@ -4,7 +4,7 @@
   "license": "MIT",
   "scripts": {
     "next-base:debug": "pnpm exec nx run next-base:serve --configuration=development",
-    "next-base:build:prod": "pnpm install -g ts-node protobufjs-cli; pnpm exec nx run lib-ui:build; pnpm exec nx run lib-data:proto-bundler next-base; pnpm exec nx run next-base:build --configuration=production"
+    "next-base:build:prod": "pnpm install -g ts-node protobufjs-cli; pnpm exec nx run lib-ui:build; pnpm exec nx run lib-data:proto-bundler next-base; pnpm exec nx run lib-data:open-api-generator next-base; pnpm exec nx run next-base:build --configuration=production"
   },
   "private": true,
   "dependencies": {
@@ -23,6 +23,7 @@
     "drizzle-orm": "0.30.10",
     "lucide-react": "0.408.0",
     "next": "14.0.3",
+    "next-swagger-doc": "^0.4.0",
     "postgres": "3.4.4",
     "protobufjs": "7.4.0",
     "react": "18.2.0",

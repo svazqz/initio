@@ -1,0 +1,106 @@
+{
+  "info": {
+    "title": "",
+    "version": "1"
+  },
+  "openapi": "3.0",
+  "components": {
+    "schemas": {
+      "Response": {
+        "type": "object",
+        "properties": {
+          "city": {
+            "type": "string"
+          },
+          "state": {
+            "type": "string"
+          },
+          "country": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "city",
+          "state",
+          "country"
+        ]
+      }
+    },
+    "parameters": {}
+  },
+  "paths": {
+    "/geo": {
+      "get": {
+        "summary": "",
+        "parameters": [
+          {
+            "schema": {
+              "type": "number"
+            },
+            "required": true,
+            "name": "latitude",
+            "in": "query"
+          },
+          {
+            "schema": {
+              "type": "number"
+            },
+            "required": true,
+            "name": "longitude",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Response"
+                }
+              }
+            }
+          }
+        }
+      },
+      "POST": {
+        "summary": "",
+        "requestBody": {
+          "description": "Body",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "latitude": {
+                    "type": "number"
+                  },
+                  "longitude": {
+                    "type": "number"
+                  }
+                },
+                "required": [
+                  "latitude",
+                  "longitude"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Response"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
