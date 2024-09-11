@@ -3,7 +3,8 @@
   "compilerOptions": {
     "module": "commonjs",
     "types": ["node"],
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
   },
   "files": [],
   "include": [],

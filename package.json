@@ -4,7 +4,7 @@
   "license": "MIT",
   "scripts": {
     "next-base:debug": "pnpm exec nx run next-base:serve --configuration=development",
-    "build": "pnpm install -g ts-node protobufjs-cli; pnpm exec nx run lib-ui:build; pnpm exec nx run next-base:build --configuration=production; pnpm exec nx run lib-data:proto-bundler"
+    "next-base:build:prod": "pnpm install -g ts-node protobufjs-cli; pnpm exec nx run lib-ui:build; pnpm exec nx run lib-data:proto-bundler next-base; pnpm exec nx run next-base:build --configuration=production"
   },
   "private": true,
   "dependencies": {

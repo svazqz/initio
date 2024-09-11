@@ -16,7 +16,7 @@
         "name": "next"
       }
     ],
-    "types": ["jest", "node"],
+    "types": ["jest", "node"]
   },
   "include": [
     "**/*.ts",
@@ -25,7 +25,8 @@
     "**/*.jsx",
     "../../apps/next-base/.next/types/**/*.ts",
     "../../dist/apps/next-base/.next/types/**/*.ts",
-    "next-env.d.ts"],
+    "next-env.d.ts"
+  ],
   "exclude": [
     "node_modules",
     "jest.config.ts",

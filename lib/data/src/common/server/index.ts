@@ -2,26 +2,22 @@
 import * as protobuf from 'protobufjs';
 import { NextResponse } from 'next/server';
 import { ZodType, z } from 'zod';
-import path from 'path';
 import {
   setOpenAPIMetadata,
   validatePayload,
   validateQueryParams,
 } from './utils';
 import { ServerFnDefinition, NextBaseRequest } from './types';
-const fs = require('fs');
+import protoBundle from '../../../../../dist/apps/proto/bundle.json';
 
-const protoDirectoryPath =
-  process.env.NODE_ENV === 'production'
-    ? './bundle.json'
-    : path.join(__dirname, '../../../../../../../dist/apps/proto/bundle.json');
-
-const protoLoadAsync = (protoDirectoryPath: string) => {
+const protoLoadAsync = (protoDirectoryPath: unknown) => {
   return new Promise((resolve, reject) => {
-    protobuf.load(protoDirectoryPath, function (err, root) {
-      if (err) reject(err);
+    try {
+      const root = protobuf.Root.fromJSON(protoDirectoryPath as any);
       resolve(root);
-    });
+    } catch (e) {
+      reject(e);
+    }
   });
 };
 
@@ -61,7 +57,7 @@ export const createRequestHandler = <
         (def.protoIn || def.protoOut)
       ) {
         try {
-          protoRoot = await protoLoadAsync(protoDirectoryPath);
+          protoRoot = await protoLoadAsync(protoBundle);
           lookupIn = def.protoIn || '';
           lookupOut = def.protoOut || '';
         } catch (e) {

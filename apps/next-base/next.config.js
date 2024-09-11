@@ -34,7 +34,7 @@ const nextConfig = {
   },
   experimental: {
     nextScriptWorkers: false,
-  },
+  }
 };
 
 const plugins = [
