@@ -97,7 +97,7 @@ export namespace Geo {
         >
           <div className="sm:w-1/2 sm:px-14">
             <p className="text-[#00A424] font-medium text-[16px] mb-2">
-              Nexty server utils
+              Initio server utils
             </p>
             <h1 className="text-info font-medium text-[24px] lg:text-[42px] mb-6">
               Create API definitions
@@ -175,7 +175,7 @@ export namespace Geo {
               Next Server Functions
             </p>
             <h1 className="text-info font-medium text-[24px] lg:text-[42px] mb-6">
-              Use Nexty Helper Function to Create Server Functions
+              Use Initio Helper Function to Create Server Functions
             </h1>
             <Image
               width={48}
