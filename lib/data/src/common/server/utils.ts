@@ -62,7 +62,7 @@ export async function validatePayload<
 export const setOpenAPIMetadata = (_def: any) => {
   const apiConfig = {
     method: _def.method,
-    path: _def.endpoint,
+    path: '/api' + _def.endpoint,
     summary: '',
     request: {},
     responses: {
@@ -70,7 +70,7 @@ export const setOpenAPIMetadata = (_def: any) => {
         description: '',
         content: {
           'application/json': {
-            schema: (_def.schemas?.response as any)?.openapi('Response'),
+            schema: _def.schemas?.response,
           },
         },
       },
