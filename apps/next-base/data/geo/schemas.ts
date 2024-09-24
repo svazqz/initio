@@ -1,7 +1,9 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-namespace */
-import * as openapi from '@asteasolutions/zod-to-openapi';
+import { extendZodWithOpenApi } from '@asteasolutions/zod-to-openapi';
 import { z } from 'zod';
+
+extendZodWithOpenApi(z);
 
 const Coordinates = z
   .object({
