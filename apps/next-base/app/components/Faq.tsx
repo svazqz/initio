@@ -34,13 +34,42 @@ const Faq = () => {
             OpenAPI Out of the Box
           </p>
           <h1 className="text-medium text-info text-[24px] lg:text-[42px] mb-4">
-            Create your API documentation by running a single command
+            Create your API documentation automatically (currently only in
+            vercel)
           </h1>
           <p className="text-[16px] lg:text-[18px] text-white mb-6">
-            Once you have registered your API definitions in the lib data you
-            can simple run the command 'nx run lib-data:exporter' and you'll get
-            the JSON definition for your API.
+            To achieve this you need to configure your application in vercel as
+            follow:
+            <br />
+            <p>Build command:</p>
+            <code className="text-sm sm:text-base inline-flex text-left items-center space-x-4 bg-gray-800 text-white rounded-lg p-4 pl-6">
+              <span className="flex gap-4">
+                <span className="flex-1">
+                  <span>pnpm run next-base:build:prod</span>
+                </span>
+              </span>
+            </code>
+            <p>Output directory</p>
+            <code className="text-sm sm:text-base inline-flex text-left items-center space-x-4 bg-gray-800 text-white rounded-lg p-4 pl-6">
+              <span className="flex gap-4">
+                <span className="flex-1">
+                  <span>dist/apps/next-base/.next</span>
+                </span>
+              </span>
+            </code>
+            <p>Install command</p>
+            <code className="text-sm sm:text-base inline-flex text-left items-center space-x-4 bg-gray-800 text-white rounded-lg p-4 pl-6">
+              <span className="flex gap-4">
+                <span className="flex-1">
+                  <span>pnpm install --frozen-lockfile</span>
+                </span>
+              </span>
+            </code>
           </p>
+          <br />
+          This will create the OpenAPI JSON automatically (as shown in the code
+          block) and the documentation can be accessed either from '/api/docs'
+          in JSON format or using the SwaggerUI accessing to '/docs'
         </div>
         <div className="lg:w-2/3">
           <AceEditor
