@@ -1,7 +1,14 @@
-import SwaggerUI from 'swagger-ui-react';
-import 'swagger-ui-react/swagger-ui.css';
+'use client';
 
-// eslint-disable-next-line react/display-name
-export default function Docs() {
-  return <SwaggerUI url="/api/docs" />;
-}
+import dynamic from 'next/dynamic';
+
+const DynamicSwaggerUI = dynamic(() => import('./Swagger'), {
+  ssr: false,
+  loading: () => <p>Loading Component...</p>,
+});
+
+const AdminDocPage = () => {
+  return <DynamicSwaggerUI />;
+};
+
+export default AdminDocPage;
