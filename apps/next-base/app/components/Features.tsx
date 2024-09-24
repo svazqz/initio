@@ -54,7 +54,7 @@ const Features = () => {
               <Image width={48} height={48} src={bluebutton} alt="bluebutton" />
             </Link>
           </div>
-          <div className="sm:w-1/2 hidden sm:block">
+          <div className="w-screen sm:w-1/2">
             <AceEditor
               mode="javascript"
               theme="twilight"
@@ -102,13 +102,6 @@ export namespace Geo {
             <h1 className="text-info font-medium text-[24px] lg:text-[42px] mb-6">
               Create API definitions
             </h1>
-            <Image
-              width={48}
-              height={48}
-              className="m-auto sm:hidden"
-              src={Feature2}
-              alt="Feature1"
-            />
             <p className="text-primary text-[16px] lg:max-w-[500px] lg:text-[18px] mt-6 mb-6">
               Describe your API endpoints, so the API utils can infer the types
               for both server functions as well as client consumers.
@@ -132,15 +125,9 @@ export namespace Geo {
               href="https://github.com/asteasolutions/zod-to-openapi"
             >
               Learn More About Zod-To-OpenAPI Library
-              <Image
-                width={48}
-                height={48}
-                src={greenButton}
-                alt="greenbutton"
-              />
             </Link>
           </div>
-          <div className="sm:w-1/2 hidden sm:block">
+          <div className="w-screen sm:w-1/2">
             <AceEditor
               mode="javascript"
               theme="twilight"
@@ -177,13 +164,6 @@ export namespace Geo {
             <h1 className="text-info font-medium text-[24px] lg:text-[42px] mb-6">
               Use Initio Helper Function to Create Server Functions
             </h1>
-            <Image
-              width={48}
-              height={48}
-              className="m-auto sm:hidden"
-              src={Feature3}
-              alt="Feature1"
-            />
             <p className="text-primary text-[16px] lg:max-w-[500px] lg:text-[18px] mt-6 mb-6">
               Every API definition will have a 'setHandler' function that can be
               used to define the corresponding serv function. This helper will
@@ -197,7 +177,7 @@ export namespace Geo {
               <Image width={48} height={48} src={pinkButton} alt="pinkButton" />
             </Link>
           </div>
-          <div className="sm:w-1/2 hidden sm:block">
+          <div className="w-screen sm:w-1/2">
             <AceEditor
               mode="javascript"
               theme="twilight"
@@ -239,13 +219,6 @@ export const POST =
             <h1 className="text-info font-medium text-[24px] lg:text-[42px] mb-6">
               Create a React Query based Consumer
             </h1>
-            <Image
-              width={48}
-              height={48}
-              className="m-auto sm:hidden"
-              src={Feature2}
-              alt="Feature1"
-            />
             <p className="text-primary text-[16px] lg:max-w-[500px] lg:text-[18px] mt-6 mb-6">
               Once you have defined your API endpoint, you can easyly create a
               consumer, which will have the infered types and will help you to
@@ -266,7 +239,7 @@ export const POST =
               />
             </Link>
           </div>
-          <div className="sm:w-1/2 hidden sm:block">
+          <div className="w-screen sm:w-1/2">
             <AceEditor
               mode="javascript"
               theme="twilight"
