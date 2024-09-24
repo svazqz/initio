@@ -62,6 +62,7 @@ const Features = () => {
               name="UNIQUE_ID_OF_DIV"
               editorProps={{ $blockScrolling: true }}
               height="400px"
+              width="100%"
               value={`/* eslint-disable @typescript-eslint/no-namespace */
 import { z } from 'zod';
 
@@ -135,6 +136,7 @@ export namespace Geo {
               name="UNIQUE_ID_OF_DIV"
               editorProps={{ $blockScrolling: true }}
               height="200px"
+              width="100%"
               value={`export const retrieveGeoData = createRequestHandler({
   method: 'POST',
   endpoint: '/geo',
@@ -185,6 +187,7 @@ export namespace Geo {
               name="UNIQUE_ID_OF_DIV"
               editorProps={{ $blockScrolling: true }}
               height="300px"
+              width="100%"
               value={`import { getGeoData, postGeoData } from '../../../data/geo/api';
 export const POST =
   postGeoData.setHandler &&
@@ -247,6 +250,7 @@ export const POST =
               name="UNIQUE_ID_OF_DIV"
               editorProps={{ $blockScrolling: true }}
               height="900px"
+              width="100%"
               value={`'use client';
 import { ChangeEvent, useCallback, useEffect, useState } from 'react';
 import { apiConsumer } from '@next-base/lib-data/common/client';
