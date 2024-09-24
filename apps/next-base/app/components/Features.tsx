@@ -61,7 +61,7 @@ const Features = () => {
               readOnly
               name="UNIQUE_ID_OF_DIV"
               editorProps={{ $blockScrolling: true }}
-              height="400px"
+              height="480px"
               width="100%"
               value={`/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-namespace */
@@ -143,7 +143,7 @@ export namespace Geo {
               readOnly
               name="UNIQUE_ID_OF_DIV"
               editorProps={{ $blockScrolling: true }}
-              height="200px"
+              height="380px"
               width="100%"
               value={`import { createRequestHandler } from '../../../../lib/data/src/common/server';
 import { Geo as GeoSchemas } from './schemas';
@@ -269,7 +269,7 @@ export const POST =
               readOnly
               name="UNIQUE_ID_OF_DIV"
               editorProps={{ $blockScrolling: true }}
-              height="900px"
+              height="920px"
               width="100%"
               value={`'use client';
 import { ChangeEvent, useCallback, useEffect, useState } from 'react';
