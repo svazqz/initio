@@ -208,10 +208,10 @@ You can generate the open API documentation by running the command `pnpm exec nx
     "title": "",
     "version": "1"
   },
-  "openapi": "3.0",
+  "openapi": "3.0.0",
   "components": {
     "schemas": {
-      "Response": {
+      "LocationData": {
         "type": "object",
         "properties": {
           "city": {
@@ -225,12 +225,24 @@ You can generate the open API documentation by running the command `pnpm exec nx
           }
         },
         "required": ["city", "state", "country"]
+      },
+      "Coordinates": {
+        "type": "object",
+        "properties": {
+          "latitude": {
+            "type": "number"
+          },
+          "longitude": {
+            "type": "number"
+          }
+        },
+        "required": ["latitude", "longitude"]
       }
     },
     "parameters": {}
   },
   "paths": {
-    "/geo": {
+    "/api/geo": {
       "get": {
         "summary": "",
         "parameters": [
@@ -257,7 +269,33 @@ You can generate the open API documentation by running the command `pnpm exec nx
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Response"
+                  "$ref": "#/components/schemas/LocationData"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "",
+        "requestBody": {
+          "description": "Body",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Coordinates"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LocationData"
                 }
               }
             }

@@ -129,10 +129,10 @@ const Faq = () => {
     "title": "",
     "version": "1"
   },
-  "openapi": "3.0",
+  "openapi": "3.0.0",
   "components": {
     "schemas": {
-      "Response": {
+      "LocationData": {
         "type": "object",
         "properties": {
           "city": {
@@ -150,12 +150,27 @@ const Faq = () => {
           "state",
           "country"
         ]
+      },
+      "Coordinates": {
+        "type": "object",
+        "properties": {
+          "latitude": {
+            "type": "number"
+          },
+          "longitude": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "latitude",
+          "longitude"
+        ]
       }
     },
     "parameters": {}
   },
   "paths": {
-    "/geo": {
+    "/api/geo": {
       "get": {
         "summary": "",
         "parameters": [
@@ -182,14 +197,14 @@ const Faq = () => {
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Response"
+                  "$ref": "#/components/schemas/LocationData"
                 }
               }
             }
           }
         }
       },
-      "POST": {
+      "post": {
         "summary": "",
         "requestBody": {
           "description": "Body",
@@ -197,19 +212,7 @@ const Faq = () => {
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "properties": {
-                  "latitude": {
-                    "type": "number"
-                  },
-                  "longitude": {
-                    "type": "number"
-                  }
-                },
-                "required": [
-                  "latitude",
-                  "longitude"
-                ]
+                "$ref": "#/components/schemas/Coordinates"
               }
             }
           }
@@ -220,7 +223,7 @@ const Faq = () => {
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Response"
+                  "$ref": "#/components/schemas/LocationData"
                 }
               }
             }
