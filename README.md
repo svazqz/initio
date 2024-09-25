@@ -274,9 +274,18 @@ _Note:_ In order to use this feature you have to explicitly add the api files yo
 ## Deploy
 
 If you want to deploy a project based on this repo in vercel you will need to override the following:
-Build command: `pnpm run next-base:build:prod`
-Output directory: `dist/apps/next-base/.next`
-Install command: `pnpm install --frozen-lockfile`
+
+```
+Build command: pnpm run next-base:build:prod
+```
+
+```
+Output directory: dist/apps/next-base/.next
+```
+
+```
+Install command: pnpm install --frozen-lockfile
+```
 
 The previous configuration will create the corresponding intermediate files for the OpenAPI and proto implementations if the file structure has been implemented as described previously.
 
