@@ -1,10 +1,7 @@
 'use client';
 import Image from 'next/image';
 import Logo from '../../public/assets/logo.png';
-import User from '../../public/assets/User.svg';
-import Menu from '../../public/assets/Menu.svg';
 import Link from 'next/link';
-import { useState } from 'react';
 
 const navLinks = [
   { name: 'Features', link: '#features' },
@@ -18,7 +15,7 @@ const Navbar = () => {
         <Image width={200} height={90} src={Logo} alt="Logo" className="m-4" />
       </div>
       <div className="flex justify-between items-center gap-x-5 lg:gap-x-14">
-        <ul className="hidden lg:flex gap-x-14">
+        <ul className="flex gap-x-14">
           {navLinks.map((item, index) => (
             <li key={index}>
               <Link
