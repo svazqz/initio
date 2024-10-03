@@ -3,6 +3,6 @@
 import { useSession } from './useSession';
 
 export const useIsSignedIn = () => {
-  const session = useSession();
-  return !!session;
+  const { session, loading } = useSession();
+  return { isSignedIn: !!session, loading };
 };

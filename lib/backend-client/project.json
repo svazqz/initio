@@ -1,0 +1,36 @@
+{
+  "name": "lib-backend-client",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "lib/backend-client/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/lib/backend-client",
+        "main": "lib/backend-client/src/index.ts",
+        "tsConfig": "lib/backend-client/tsconfig.lib.json",
+        "assets": ["lib/backend-client/*.md"]
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": [
+          "lib/backend-client/**/*.ts",
+          "lib/backend-client/package.json"
+        ]
+      }
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "lib/backend-client/jest.config.ts"
+      }
+    }
+  },
+  "tags": []
+}

@@ -12,17 +12,6 @@ import 'ace-builds/src-noconflict/theme-twilight';
 import 'ace-builds/src-noconflict/ext-language_tools';
 
 const Faq = () => {
-  const [value, setValue] = useState('item-1');
-
-  const handleTrigger = (item: any) => {
-    const itemVal = `item-${item}`;
-    if (itemVal === value) {
-      setValue('');
-    } else {
-      setValue(itemVal);
-    }
-  };
-
   return (
     <div
       className="px-5 lg:px-0 lg:container pt-14 sm:pt-32 text-white"
@@ -37,7 +26,7 @@ const Faq = () => {
             Create your API documentation automatically (currently only in
             vercel)
           </h1>
-          <p className="text-[16px] lg:text-[18px] text-white mb-6">
+          <span className="text-[16px] lg:text-[18px] text-white mb-6">
             To achieve this you need to configure your application in vercel as
             follow:
             <br />
@@ -65,7 +54,7 @@ const Faq = () => {
                 </span>
               </span>
             </code>
-          </p>
+          </span>
           <br />
           This will create the OpenAPI JSON automatically (as shown in the code
           block) and the documentation can be accessed either from{' '}
@@ -84,9 +73,9 @@ const Faq = () => {
             >
               <path
                 stroke="currentColor"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
                 d="M1 5h12m0 0L9 1m4 4L9 9"
               />
             </svg>
@@ -107,9 +96,9 @@ const Faq = () => {
             >
               <path
                 stroke="currentColor"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
                 d="M1 5h12m0 0L9 1m4 4L9 9"
               />
             </svg>
